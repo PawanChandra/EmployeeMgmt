@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Employee> 
+@{
+    ViewData["Title"] = "Index";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <a class="btn btn-primary" asp-action="Create" asp-controller="Employee">Create New</a>
+        <div class="row mt-3">
+            <div class="col-md-9">
+                <div class="form-group">
+                    <select class="form-control" asp-items="ViewBag.Departments" id="getSelectedDepartment">
+                        <option value="0">Select</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <a asp-action="index" asp-controller="employee" class="btn btn-success">Show List</a>
+            </div>
+        </div>
+        <div id="EmployeeTableByDept"></div>
+        <table class="table table-bordered mt-2" id="getInitialTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                </tr>
+            </thead>
+            <thead>
+                @foreach(var item in Model){
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Mobile</td>
+                        <td>@item.Email</td>
+                        <td>@item.Department?.Name</td>
+                    </tr>
+                }
+            </thead>
+        </table>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<script>
+    $(document).ready(function(){
+        $('#getSelectedDepartment').on('change',function(){
+            getEmployess();
+        })
+
+        function getEmployess(){
+            var selectedDeparment = $('#getSelectedDepartment').val();
+            $.ajax({
+                url:'/employee/getFilteredEmployee',
+                type:'GET',
+                data: { id: selectedDeparment },
+                success:function(response){
+                    $('#getInitialTable').hide();
+                    $('#EmployeeTableByDept').html(response);
+                }
+            })
+        }
+    });
+</script>
+

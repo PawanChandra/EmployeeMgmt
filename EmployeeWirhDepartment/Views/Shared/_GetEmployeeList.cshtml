@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Employee>
+<table class="table table-bordered mt-2" id="EmployeeTable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Mobile</th>
+            <th>Email</th>
+            <th>Department</th>
+        </tr>
+    </thead>
+    <thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Mobile</td>
+                <td>@item.Email</td>
+                <td>@item.Department?.Name</td>
+            </tr>
+        }
+    </thead>
+</table>
